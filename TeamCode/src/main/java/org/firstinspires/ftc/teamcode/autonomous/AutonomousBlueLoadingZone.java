@@ -209,9 +209,8 @@ public class AutonomousBlueLoadingZone extends BaseAutonomous {
     @Override
     protected void onInit() {
         drive = new SampleMecanumDriveREVOptimized(robot.hardwareMap);
-        robot.hugger.hugLeft();
         beatBox = new BeatBox();
-        beatBox.addSong("Spooky", MediaPlayer.create(robot.hardwareMap.appContext, R.raw.ggthemebest));
+        beatBox.addSong("Spooky", MediaPlayer.create(robot.hardwareMap.appContext,R.raw.ggthemebest));
         beatBox.baseBoost("Spooky",100);
 
         beatBox.playSong("Spooky");

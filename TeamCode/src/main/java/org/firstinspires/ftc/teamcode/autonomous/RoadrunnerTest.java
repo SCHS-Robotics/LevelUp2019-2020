@@ -17,17 +17,10 @@ public class RoadrunnerTest extends BaseAutonomous {
     public void main() {
         drive.followTrajectorySync(
                 drive.trajectoryBuilder()
-                        .splineTo(new Pose2d(30, 30, 0))
+                        .splineTo(new Pose2d(15, 15, 0))
+                        .splineTo(new Pose2d(30, -15, 0))
                         .build()
-        );
 
-        waitTime(2000);
-
-        drive.followTrajectorySync(
-                drive.trajectoryBuilder()
-                        .reverse()
-                        .splineTo(new Pose2d(0, 0, 0))
-                        .build()
         );
     }
 

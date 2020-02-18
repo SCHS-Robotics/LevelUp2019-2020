@@ -17,8 +17,7 @@ import org.firstinspires.ftc.teamcode.robots.Cygnus;
  */
 @Autonomous(name = "AutonomousBlueBuildingWall", group = "competition")
 public class AutonomousBlueBuildingZone extends BaseAutonomous {
-    public @MainRobot
-    Cygnus robot;
+    public @MainRobot Cygnus robot;
     public SampleMecanumDriveREVOptimized drive;
     private BeatBox beatBox;
 
@@ -87,7 +86,6 @@ public class AutonomousBlueBuildingZone extends BaseAutonomous {
     public void onInit() {
         drive = new SampleMecanumDriveREVOptimized(robot.hardwareMap);
         robot.mover.resetLatch();
-        robot.hugger.hugLeft();
         beatBox = new BeatBox();
         beatBox.addSong("Spooky", MediaPlayer.create(robot.hardwareMap.appContext, R.raw.spookyskeleboys));
         beatBox.baseBoost("Spooky",100);

@@ -14,12 +14,17 @@ import org.jetbrains.annotations.NotNull;
 
 public class Hugger extends SubSystem {
     private Toggle hugToggle = new Toggle(Toggle.ToggleTypes.flipToggle, false);
-    private Servo leftHugger, rightHugger;
+    private Servo leftHugger, leftTopHugger, rightHugger, rightTopHugger;
     private CustomizableGamepad gamepad;
-    public Hugger(@NotNull Robot robot, String huggerServoConfigLeft, String huggerServoConfigRight) {
+    public Hugger(@NotNull Robot robot, String huggerServoConfigLeft, String huggerServoConfigRight, String hugger2ServoConfigLeft, String hugger2ServoConfigRight) {
         super(robot);
         leftHugger = robot.hardwareMap.servo.get(huggerServoConfigLeft);
         rightHugger = robot.hardwareMap.servo.get(huggerServoConfigRight);
+        leftTopHugger = robot.hardwareMap.servo.get(hugger2ServoConfigLeft);
+        rightTopHugger = robot.hardwareMap.servo.get(hugger2ServoConfigRight);
+
+        leftHugger.setDirection(Servo.Direction.REVERSE);
+        leftTopHugger.setDirection(Servo.Direction.REVERSE);
 
         gamepad = new CustomizableGamepad(robot);
         usesConfig = true;
@@ -59,7 +64,7 @@ public class Hugger extends SubSystem {
     }
 
     public void hug() {
-        resetLeft();
+        hugLeft();
         hugRight();
     }
 
@@ -70,7 +75,7 @@ public class Hugger extends SubSystem {
     }
 
     public void reset() {
-        hugLeft();
+        resetLeft();
         resetRight();
     }
 
@@ -96,6 +101,10 @@ public class Hugger extends SubSystem {
         setHuggerPosRight(1);
     }
 
+    public void hugTopRight() {
+        setTopHuggerPosRight(1);
+    }
+
     public void hugRightTime(long timeMillis) {
         hugRight();
         waitTime(timeMillis);
@@ -106,10 +115,17 @@ public class Hugger extends SubSystem {
         setHuggerPosRight(0.5);
     }
 
+    public void resetTopRight() {
+        setTopHuggerPosRight(0);
+    }
+
     public void setHuggerPosRight(double pos) {
         rightHugger.setPosition(Range.clip(pos,0,1));
     }
 
+    public void setTopHuggerPosRight(double pos) {
+        rightTopHugger.setPosition(Range.clip(pos,0,1));
+    }
     @TeleopConfig
     public static ConfigParam[] teleopConfig() {
         return new ConfigParam[] {

@@ -1,0 +1,24 @@
+package org.firstinspires.ftc.teamcode.autonomous;
+
+import com.SCHSRobotics.HAL9001.system.source.BaseRobot.BaseAutonomous;
+import com.SCHSRobotics.HAL9001.util.annotations.MainRobot;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
+import org.firstinspires.ftc.teamcode.roadrunner.drive.mecanum.SampleMecanumDriveREVOptimized;
+import org.firstinspires.ftc.teamcode.robots.Cygnus;
+
+@Autonomous(name = "HuggerTest", group = "competition")
+public class HuggerTest extends BaseAutonomous {
+    public @MainRobot Cygnus robot;
+
+    public SampleMecanumDriveREVOptimized drive;
+    @Override
+    public void main() {
+        for (int i = 0; i < 10; i++) {
+            robot.hugger.hugTopRight();
+            waitTime(750);
+            robot.hugger.resetTopRight();
+            waitTime(750);
+        }
+    }
+}

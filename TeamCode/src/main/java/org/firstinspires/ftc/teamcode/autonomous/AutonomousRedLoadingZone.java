@@ -17,7 +17,8 @@ import java.util.List;
 
 @Autonomous(name = "AutonomousRedLoading", group = "competition")
 public class AutonomousRedLoadingZone extends BaseAutonomous {
-    public @MainRobot Cygnus robot;
+    public @MainRobot
+    Cygnus robot;
     public SampleMecanumDriveREVOptimized drive;
 
     private BeatBox beatBox;
@@ -106,7 +107,7 @@ public class AutonomousRedLoadingZone extends BaseAutonomous {
 
         );
 
-        robot.hugger.resetLeft();
+        robot.hugger.hugLeft();
         waitTime(500);
 
         drive.followTrajectorySync(
@@ -123,7 +124,7 @@ public class AutonomousRedLoadingZone extends BaseAutonomous {
                         .build()
         );
 
-        robot.hugger.hugLeft();
+        robot.hugger.resetLeft();
         waitTime(200);
 
         drive.followTrajectorySync(
@@ -140,7 +141,7 @@ public class AutonomousRedLoadingZone extends BaseAutonomous {
 
         );
 
-        robot.hugger.resetLeft();
+        robot.hugger.hugLeft();
         waitTime(500);
         drive.followTrajectorySync(
                 drive.trajectoryBuilder()
@@ -152,7 +153,7 @@ public class AutonomousRedLoadingZone extends BaseAutonomous {
                         .forward(60)
                         .build()
         );
-        robot.hugger.hugLeft();
+        robot.hugger.resetLeft();
         drive.followTrajectorySync(
                 drive.trajectoryBuilder()
                         .back(52)
@@ -163,7 +164,7 @@ public class AutonomousRedLoadingZone extends BaseAutonomous {
                         .strafeLeft(18.5)
                         .build()
         );
-        robot.hugger.resetLeft();
+        robot.hugger.hugLeft();
         waitTime(500);
         drive.followTrajectorySync(
                 drive.trajectoryBuilder()
@@ -175,7 +176,7 @@ public class AutonomousRedLoadingZone extends BaseAutonomous {
                         .forward(55-state.dX)
                         .build()
         );
-        robot.hugger.hugLeft();
+        robot.hugger.resetLeft();
         drive.followTrajectorySync(
                 drive.trajectoryBuilder()
                         .back(12)
@@ -193,10 +194,10 @@ public class AutonomousRedLoadingZone extends BaseAutonomous {
     protected void onInit() {
         drive = new SampleMecanumDriveREVOptimized(robot.hardwareMap);
         robot.hugger.resetRight();
-        robot.hugger.hugLeft();
+        robot.hugger.resetLeft();
         robot.plopper.resetPlop();
         beatBox = new BeatBox();
-        beatBox.addSong("Spooky", MediaPlayer.create(robot.hardwareMap.appContext, R.raw.ggthemebest));
+        beatBox.addSong("Spooky", MediaPlayer.create(robot.hardwareMap.appContext,R.raw.ggthemebest));
         beatBox.baseBoost("Spooky",100);
 
         beatBox.playSong("Spooky");

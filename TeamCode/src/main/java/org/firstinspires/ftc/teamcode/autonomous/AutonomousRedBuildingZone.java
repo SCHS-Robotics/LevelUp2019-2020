@@ -87,7 +87,6 @@ public class AutonomousRedBuildingZone extends BaseAutonomous {
     public void onInit() {
         drive = new SampleMecanumDriveREVOptimized(robot.hardwareMap);
         robot.mover.resetLatch();
-        robot.hugger.hugLeft();
         beatBox = new BeatBox();
         beatBox.addSong("Spooky", MediaPlayer.create(robot.hardwareMap.appContext, R.raw.spookyskeleboys));
         beatBox.baseBoost("Spooky",100);

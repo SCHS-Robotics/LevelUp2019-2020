@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.R;
 import org.firstinspires.ftc.teamcode.roadrunner.drive.mecanum.SampleMecanumDriveREVOptimized;
 import org.firstinspires.ftc.teamcode.robots.Cygnus;
 
+
 /**
  * Place the bot with the intake touching the wall and the left wheels on the crease
  */
@@ -86,7 +87,7 @@ public class AutonomousRedBuildingZoneWall extends BaseAutonomous {
     public void onInit() {
         drive = new SampleMecanumDriveREVOptimized(robot.hardwareMap);
         robot.mover.resetLatch();
-        robot.hugger.hugLeft();
+
         beatBox = new BeatBox();
         beatBox.addSong("Spooky", MediaPlayer.create(robot.hardwareMap.appContext, R.raw.spookyskeleboys));
         beatBox.baseBoost("Spooky",100);

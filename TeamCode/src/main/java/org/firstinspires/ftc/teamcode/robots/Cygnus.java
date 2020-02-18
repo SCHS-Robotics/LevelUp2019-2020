@@ -33,7 +33,7 @@ public class Cygnus extends Robot {
         lineDetector = new LineDetector(this, "colorSensor");
         plopper = new CapstonePlopper(this,"plop");
         mover = new FoundationMover(this,"leftLatch", "rightLatch");
-        hugger = new Hugger(this, "huggerLeft", "huggerRight");
+        hugger = new Hugger(this, "huggerLeft", "huggerRight","topLeftHugger","topRightHugger");
         skystoneDetector = new SconeFinder(this);
         // auto = new YeetAutonomousProgram();
 
