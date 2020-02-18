@@ -11,6 +11,18 @@
 // Include common definitions from above.
 apply from: '../build.common.gradle'
 dependencies {
+
+    implementation 'org.hal9001:hal9001:1.1.0-beta'
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.9'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.9'
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.9.9'
+
+    implementation 'com.acmerobotics.roadrunner:core:0.4.7'
+    implementation 'com.acmerobotics.dashboard:dashboard:0.3.7'
+
+    implementation 'org.openftc:rev-extensions-2:1.2'
+
     /*
      * Other Modules
      */
