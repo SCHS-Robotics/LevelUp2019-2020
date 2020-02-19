@@ -53,6 +53,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -384,7 +385,38 @@ public class FtcRobotControllerActivity extends Activity
     }
 
     FtcDashboard.start();
+
+    //Code for changing backgrounds
+    View view = (View) findViewById(R.id.RelativeLayout);
+    int orientation = getResources().getConfiguration().orientation;
+    if(orientation == Configuration.ORIENTATION_LANDSCAPE) {
+      view.setBackgroundResource (R.drawable.levelupphonehorizontal);
+    } else {
+      view.setBackgroundResource (R.drawable.levelupphonevertical);
+    }
+    findViews(entireScreenLayout);
   }
+
+    public void findViews(View v) {
+      try {
+        if (v instanceof ViewGroup) {
+          ViewGroup vg = (ViewGroup) v;
+          for (int i = 0; i < vg.getChildCount(); i++) {
+            View child = vg.getChildAt(i);
+            // recursively call this method
+            findViews(child);
+          }
+        } else if (v instanceof TextView) {
+          TextView text = (TextView) v;
+          //If dashboard text detected
+          if(text.getCurrentTextColor() == -14064897) {
+            text.setBackgroundColor(getResources().getColor(R.color.background_black));
+          }
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
 
   protected UpdateUI createUpdateUI() {
     Restarter restarter = new RobotRestarter();
@@ -614,6 +646,15 @@ public class FtcRobotControllerActivity extends Activity
     super.onConfigurationChanged(newConfig);
     // don't destroy assets on screen rotation
     updateMonitorLayout(newConfig);
+
+    //Code for changing backgrounds
+    View view = (View) findViewById(R.id.RelativeLayout);
+    int orientation = getResources().getConfiguration().orientation;
+    if(orientation == Configuration.ORIENTATION_LANDSCAPE) {
+      view.setBackgroundResource (R.drawable.levelupphonehorizontal);
+    } else {
+      view.setBackgroundResource (R.drawable.levelupphonevertical);
+    }
   }
 
   /**
