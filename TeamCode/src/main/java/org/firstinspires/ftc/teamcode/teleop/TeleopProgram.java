@@ -30,8 +30,6 @@ public class TeleopProgram extends BaseTeleop {
 
     @Override
     protected void onInit() {
-        robot.hugger.hugLeft();
-
         gamepad = new CustomizableGamepad(robot);
         gamepad.addButton(SONG_BUTTON,new Button(1, Button.BooleanInputs.x));
 
@@ -123,5 +121,10 @@ public class TeleopProgram extends BaseTeleop {
             telemetry.addData("song num", songNum);
             telemetry.update();
         }
+    }
+
+    @Override
+    public void onStop() {
+        beatBox.stopSong(currentSong);
     }
 }

@@ -24,7 +24,6 @@ public class Hugger extends SubSystem {
         rightTopHugger = robot.hardwareMap.servo.get(hugger2ServoConfigRight);
 
         leftHugger.setDirection(Servo.Direction.REVERSE);
-        leftTopHugger.setDirection(Servo.Direction.REVERSE);
 
         gamepad = new CustomizableGamepad(robot);
         usesConfig = true;
@@ -33,6 +32,8 @@ public class Hugger extends SubSystem {
     @Override
     public void init() {
         reset();
+        hugTopLeft();
+        hugTopRight();
     }
 
     @Override
@@ -77,10 +78,12 @@ public class Hugger extends SubSystem {
     public void reset() {
         resetLeft();
         resetRight();
+        resetTopLeft();
+        resetTopRight();
     }
 
     public void hugLeft() {
-        setHuggerPosLeft(1);
+        setHuggerPosLeft(0.6);
     }
 
     public void hugLeftTime(long timeMillis) {
@@ -95,6 +98,18 @@ public class Hugger extends SubSystem {
 
     public void setHuggerPosLeft(double pos) {
         leftHugger.setPosition(Range.clip(pos,0,1));
+    }
+
+    public void hugTopLeft() {
+        setTopHuggerPosLeft(1);
+    }
+
+    public void resetTopLeft() {
+        setTopHuggerPosLeft(0);
+    }
+
+    public void setTopHuggerPosLeft(double pos) {
+        leftTopHugger.setPosition(Range.clip(pos,0,1));
     }
 
     public void hugRight() {

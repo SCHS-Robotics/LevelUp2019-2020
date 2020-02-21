@@ -15,9 +15,9 @@ public class HuggerTest extends BaseAutonomous {
     @Override
     public void main() {
         for (int i = 0; i < 10; i++) {
-            robot.hugger.hugTopRight();
+            robot.hugger.hugTopLeft();
             waitTime(750);
-            robot.hugger.resetTopRight();
+            robot.hugger.resetTopLeft();
             waitTime(750);
         }
     }
