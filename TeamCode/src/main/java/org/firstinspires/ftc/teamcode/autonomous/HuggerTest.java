@@ -14,11 +14,16 @@ public class HuggerTest extends BaseAutonomous {
     public SampleMecanumDriveREVOptimized drive;
     @Override
     public void main() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
+            robot.hugger.hugLeft();
+            waitTime(750);
+            robot.hugger.resetLeft();
+            waitTime(750);
             robot.hugger.hugTopLeft();
             waitTime(750);
             robot.hugger.resetTopLeft();
             waitTime(750);
         }
+
     }
 }

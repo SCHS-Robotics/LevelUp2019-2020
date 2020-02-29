@@ -177,7 +177,6 @@ public class SconeFinderV2 extends VisionSubSystem {
 
         //Skeletonizes the yellow mask using the Guo-Hall skeletonization algorithm.
         Ximgproc.thinning(yellowMask,skeleton,Ximgproc.THINNING_GUOHALL);
-        //yellowMask.;
 
         //Detects major lines in the skeleton using the hough probabilistic transform
         Imgproc.HoughLinesP(skeleton, linesP,

@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import com.SCHSRobotics.HAL9001.system.source.BaseRobot.BaseAutonomous;
 import com.SCHSRobotics.HAL9001.util.annotations.MainRobot;
 import com.SCHSRobotics.HAL9001.util.misc.BeatBox;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
@@ -105,7 +106,7 @@ public class AutonomousBlueLoadingZone extends BaseAutonomous {
   */
         drive.followTrajectorySync(
                 drive.trajectoryBuilder()
-                        .strafeLeft(37)
+                        .strafeLeft(35.5)
                         .addMarker(new Vector2d(0,6),() -> {
                             robot.hugger.hugLeft();
                             robot.hugger.resetTopLeft();
@@ -118,14 +119,34 @@ public class AutonomousBlueLoadingZone extends BaseAutonomous {
                             return Unit.INSTANCE;
                         })
 
-                        .addMarker(() -> {
-                            robot.hugger.resetLeft();
-                            return  Unit.INSTANCE;
-                        })
+
                         .build()
 
         );
-        waitTime(3000);
+        waitTime(500);
+        robot.hugger.resetLeft();
+        waitTime(400);
+        drive.followTrajectorySync(
+                drive.trajectoryBuilder()
+                        .setReversed(true)
+                        .splineTo(new Pose2d(-30, 15, 0))
+                        .addMarker(new Vector2d(-25, 15), () -> {
+                            robot.hugger.resetLeft();
+                            return Unit.INSTANCE;
+                        })
+
+                        .build()
+        );
+
+        waitTime(250);
+        robot.hugger.resetTopLeft();
+        waitTime(250);
+        drive.followTrajectorySync(
+                drive.trajectoryBuilder()
+                .forward(5)
+                .splineTo(new Pose2d(0, 30, 0))
+                .build()
+        );
         /*
         waitUntil(() -> robot.skystoneDetector.getSkystones().size() > 0);
         robot.skystoneDetector.stopVision();
