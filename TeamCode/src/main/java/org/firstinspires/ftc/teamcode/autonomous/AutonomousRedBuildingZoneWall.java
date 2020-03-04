@@ -14,6 +14,9 @@ import org.firstinspires.ftc.teamcode.robots.Cygnus;
 
 /**
  * Place the bot with the intake touching the wall and the left wheels on the crease
+ * Moves the foundation then parks close to the wall
+ *
+ * @author Jack Kinney
  */
 @Autonomous(name = "AutonomousRedBuildingWall", group = "competition")
 public class AutonomousRedBuildingZoneWall extends BaseAutonomous {
@@ -93,8 +96,6 @@ public class AutonomousRedBuildingZoneWall extends BaseAutonomous {
         beatBox.baseBoost("Spooky",100);
 
         beatBox.playSong("Spooky");
-
-        //robot.skystoneDetector.startVision();
     }
 
     @Override

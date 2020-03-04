@@ -38,8 +38,10 @@ import static org.firstinspires.ftc.teamcode.roadrunner.drive.DriveConstants.kV;
  */
 @Config
 public abstract class SampleMecanumDriveBase extends MecanumDrive {
+    //kp 0.5
+    //kp 0.2 kd 0.04
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0.5, 0, 0);
-    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0.2, 0, 0.04);
+    public static PIDCoefficients HEADING_PID = new PIDCoefficients(0.1, 0, 0);
 
     public enum Mode {
         IDLE,

@@ -8,8 +8,7 @@ import org.firstinspires.ftc.teamcode.robots.OpenCVTestRobot;
 
 @TeleOp(name = "OpenCV Testing", group = "testing")
 public class OpenCVTesting extends BaseTeleop {
-    public @MainRobot
-    OpenCVTestRobot robot;
+    public @MainRobot OpenCVTestRobot robot;
 
     @Override
     public void onStart() {

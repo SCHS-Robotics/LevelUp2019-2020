@@ -5,7 +5,10 @@ import android.media.MediaPlayer;
 
 import com.SCHSRobotics.HAL9001.system.source.BaseRobot.BaseAutonomous;
 import com.SCHSRobotics.HAL9001.util.annotations.MainRobot;
+import com.SCHSRobotics.HAL9001.util.math.Vector;
 import com.SCHSRobotics.HAL9001.util.misc.BeatBox;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.R;
@@ -14,6 +17,8 @@ import org.firstinspires.ftc.teamcode.robots.Cygnus;
 import org.opencv.core.Point;
 
 import java.util.List;
+
+import kotlin.Unit;
 
 @Autonomous(name = "AutonomousRedLoading", group = "competition")
 public class AutonomousRedLoadingZone extends BaseAutonomous {
@@ -25,11 +30,13 @@ public class AutonomousRedLoadingZone extends BaseAutonomous {
 
     private static final double LEFT_DIVIDER = 28, RIGHT_DIVIDER = 92;
     private enum StoneState {
-        LEFT(-10), CENTER(-2), RIGHT(6);
+        LEFT(16, 2), CENTER(8, 1), RIGHT(0, 0);
 
         public double dX;
-        StoneState(double dX) {
+        public int val;
+        StoneState(double dX, int val) {
             this.dX = dX;
+            this.val = val;
         }
     }
     private StoneState state;
@@ -57,7 +64,7 @@ public class AutonomousRedLoadingZone extends BaseAutonomous {
         robot.drive.stopAllMotors();*/
 
         robot.telemetry.setAutoClear(true);
-
+        
         waitUntil(() -> robot.skystoneDetector.getSkystones().size() > 0);
         robot.skystoneDetector.stopVision();
 
@@ -70,7 +77,7 @@ public class AutonomousRedLoadingZone extends BaseAutonomous {
             skystoneLoc = skystones.get(0);
         }
         else {
-            skystoneLoc = skystones.get(0).x > skystones.get(1).x ? skystones.get(0) : skystones.get(1);
+            skystoneLoc = skystones.get(0).x >= skystones.get(1).x ? skystones.get(0) : skystones.get(1);
         }
 
         if(skystoneLoc.x < LEFT_DIVIDER) {
@@ -83,104 +90,166 @@ public class AutonomousRedLoadingZone extends BaseAutonomous {
             state = StoneState.RIGHT;
         }
 
+        robot.telemetry.setAutoClear(true);
+
         telemetry.addData("state", state.name());
         telemetry.update();
-        if (state.dX > 0) {
-            drive.followTrajectorySync(
-                    drive.trajectoryBuilder()
-                            .forward(state.dX)//splineTo(new Pose2d(32.25, 24   , toRadians(90))))
-                            .build()
 
-            );
-        } else {
-            drive.followTrajectorySync(
-                    drive.trajectoryBuilder()
-                            .back(-state.dX)//splineTo(new Pose2d(32.25, 24   , toRadians(90))))
-                            .build()
-
-            );
-        }
+        //Moves towards and grabs first stone
         drive.followTrajectorySync(
                 drive.trajectoryBuilder()
-                        .strafeLeft(36.5)//splineTo(new Pose2d(32.25, 24   , toRadians(90))))
+
+                        .strafeLeft(34.5)
+                        .addMarker(new Vector2d(0,6),() -> {
+                            robot.hugger.hugLeft();
+                            robot.hugger.resetTopLeft();
+                            return Unit.INSTANCE;
+                        })
+                        /*.addMarker(new Vector2d(-state.dX/1.5,-34.5),() -> {
+
+                            return Unit.INSTANCE;
+                        })*/
                         .build()
 
         );
+        int delta = state == StoneState.RIGHT ? 0 : state == StoneState.CENTER ? 350 : 700;
+        robot.drive.driveEncoders(new Vector(0,-0.15), delta);
+        robot.hugger.hugTopLeft();
+        waitTime(500);
+        robot.hugger.resetLeft();
+        //moves first stone to building side
+        waitTime(100);
+        drive.followTrajectorySync(
+                drive.trajectoryBuilder()
+                        .strafeLeft(4)
+                        .build()
+        );
+        drive.followTrajectorySync(
+                drive.trajectoryBuilder()
+                        .splineTo(new Pose2d(53, 25, 0))
+                        .build()
 
+        );
+        // Deploys first stone
         robot.hugger.hugLeft();
         waitTime(500);
+        robot.hugger.resetTopLeft();
 
+        //Moves to second stone
         drive.followTrajectorySync(
                 drive.trajectoryBuilder()
-                        .strafeRight(13)
+                        .back(5)
+                        .setReversed(true)
+                        .splineTo(new Pose2d(-24 + state.dX, 32.5, 0))
+                        .addMarker(new Vector2d(-10, 20), () -> {
+                            robot.hugger.resetTopLeft();
+
+                            return Unit.INSTANCE;
+                        })
                         .build()
         );
-        waitTime(250);
-
-        drive.followTrajectorySync(
-                drive.trajectoryBuilder()
-
-                        .forward(50)
-                        .build()
-        );
-
+        // grabs second stone
+        robot.hugger.hugTopLeft();
+        waitTime(550);
         robot.hugger.resetLeft();
+        waitTime(100);
+
+        //Drop off second stone
+        drive.followTrajectorySync(
+                drive.trajectoryBuilder()
+                        .splineTo(new Pose2d(60, 25, 0))
+                        .build()
+
+        );
+        // Prevents block pile
+        drive.followTrajectorySync(
+                drive.trajectoryBuilder()
+                        .strafeLeft(8)
+                        .build()
+        );
+        // prepares hugger
+        robot.hugger.hugLeft();
         waitTime(200);
-
+        robot.hugger.resetTopLeft();
         drive.followTrajectorySync(
                 drive.trajectoryBuilder()
-                        .back(74)
+                        .strafeRight(8)
+                        .build()
+        );
+
+        int shift1 = 8*((state.val + 1)%3);
+
+        //moves to third stone
+        drive.followTrajectorySync(
+                drive.trajectoryBuilder()
+                        .setReversed(true)
+                        .splineTo(new Pose2d(shift1, 31.75, 0))
+                        .addMarker(new Vector2d(-10, 20), () -> {
+                            robot.hugger.resetTopLeft();
+                            robot.hugger.hugLeft();
+                            return Unit.INSTANCE;
+                        })
+                        .build()
+        );
+        //grabs third stone
+        robot.hugger.hugTopLeft();
+        waitTime(550);
+        robot.hugger.resetLeft();
+
+        //moves third stone
+        drive.followTrajectorySync(
+                drive.trajectoryBuilder()
+                        .splineTo(new Pose2d(60, 25, 0))
                         .build()
 
         );
 
-        drive.followTrajectorySync(
-                drive.trajectoryBuilder()
-                        .strafeLeft(15.5)
-                        .build()
-
-        );
-
+        robot.hugger.resetTopLeft();
         robot.hugger.hugLeft();
-        waitTime(500);
+        waitTime(600);
+
+        //gets fourth stone
         drive.followTrajectorySync(
                 drive.trajectoryBuilder()
-                        .strafeRight(14.5)
+                        .setReversed(true)
+                        .splineTo(new Pose2d(-10, 33.5, 0))
+                        .addMarker(new Vector2d(-12, 20), () -> {
+                            robot.hugger.resetTopLeft();
+                            robot.hugger.hugLeft();
+                            return Unit.INSTANCE;
+                        })
                         .build()
         );
+
+        robot.hugger.hugTopLeft();
+        waitTime(500);
+        robot.hugger.resetLeft();
+        //moves fourth block
         drive.followTrajectorySync(
                 drive.trajectoryBuilder()
-                        .forward(60)
+                        .splineTo(new Pose2d(60, 25, 0))
+                        .build()
+
+        );
+        robot.hugger.resetTopLeft();
+        robot.hugger.hugLeft();
+        robot.hugger.resetTopLeft();
+        //prevents block pileup
+        drive.followTrajectorySync(
+                drive.trajectoryBuilder()
+                        .strafeLeft(6)
+                        .strafeRight(6)
                         .build()
         );
         robot.hugger.resetLeft();
+
+        //parks
         drive.followTrajectorySync(
                 drive.trajectoryBuilder()
-                        .back(52)
+                        .setReversed(true)
+                        .splineTo(new Pose2d(36, 28, 0))
                         .build()
-        );
-        drive.followTrajectorySync(
-                drive.trajectoryBuilder()
-                        .strafeLeft(18.5)
-                        .build()
-        );
-        robot.hugger.hugLeft();
-        waitTime(500);
-        drive.followTrajectorySync(
-                drive.trajectoryBuilder()
-                        .strafeRight(15.5)
-                        .build()
-        );
-        drive.followTrajectorySync(
-                drive.trajectoryBuilder()
-                        .forward(55-state.dX)
-                        .build()
-        );
-        robot.hugger.resetLeft();
-        drive.followTrajectorySync(
-                drive.trajectoryBuilder()
-                        .back(12)
-                        .build()
+
         );
 
         //robot.intake.intake(1);
@@ -193,7 +262,7 @@ public class AutonomousRedLoadingZone extends BaseAutonomous {
     @Override
     protected void onInit() {
         drive = new SampleMecanumDriveREVOptimized(robot.hardwareMap);
-        robot.hugger.resetRight();
+        robot.hugger.resetLeft();
         robot.hugger.resetLeft();
         robot.plopper.resetPlop();
         beatBox = new BeatBox();

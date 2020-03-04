@@ -18,6 +18,7 @@ public class SkystoneDetector extends VisionSubSystem {
 
     @Override
     public Mat onCameraFrame(Mat input) {
+
         Imgproc.cvtColor(input,input,Imgproc.COLOR_RGBA2RGB);
 
         Imgproc.medianBlur(input,input,9);

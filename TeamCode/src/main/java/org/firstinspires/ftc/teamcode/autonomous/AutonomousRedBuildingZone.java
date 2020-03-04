@@ -13,7 +13,10 @@ import org.firstinspires.ftc.teamcode.robots.Cygnus;
 
 
 /**
- * Place the bot with the intake touching the wall and the left wheels on the crease
+ * Place the bot with the intake touching the wall and the left wheels on the crease.
+ * Moves the foundation then parks close to the skybridge
+ *
+ * @author Jack Kinney
  */
 @Autonomous(name = "AutonomousRedBuildingWallNeutral", group = "competition")
 public class AutonomousRedBuildingZone extends BaseAutonomous {
@@ -79,9 +82,6 @@ public class AutonomousRedBuildingZone extends BaseAutonomous {
                         .strafeLeft(28)
                         .build()
         );
-
-
-
     }
     @Override
     public void onInit() {
@@ -93,7 +93,6 @@ public class AutonomousRedBuildingZone extends BaseAutonomous {
 
         beatBox.playSong("Spooky");
 
-        //robot.skystoneDetector.startVision();
     }
 
     @Override

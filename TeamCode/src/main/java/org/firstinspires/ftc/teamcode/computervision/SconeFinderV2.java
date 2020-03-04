@@ -41,7 +41,8 @@ public class SconeFinderV2 extends VisionSubSystem {
     /**
      * The bounds for yellow in the Lab color space.
     **/
-    private static final Scalar LOWER_Lab_VAL = new Scalar(0,105,170), UPPER_Lab_RANGE = new Scalar(255,170,255);
+    //0,105,140; 255,170,255;
+    private static final Scalar LOWER_Lab_VAL = new Scalar(0,105,140), UPPER_Lab_RANGE = new Scalar(255,170,255);
     /**
      * The size of the median blue kernel applied to the image. Must be an odd number.
      */
@@ -69,7 +70,7 @@ public class SconeFinderV2 extends VisionSubSystem {
     /**
      * The tolerance in degrees on what is considered a horizontal line.
      */
-    private static final double HORIZONTAL_THRESH = 3;
+    private static final double HORIZONTAL_THRESH = 5;
     /**
      * The kernel used to perform a dilation, closing gaps in the detected skystone. It is wider than it is long in order to promote horizontal lines.
      */
@@ -178,6 +179,10 @@ public class SconeFinderV2 extends VisionSubSystem {
         //Skeletonizes the yellow mask using the Guo-Hall skeletonization algorithm.
         Ximgproc.thinning(yellowMask,skeleton,Ximgproc.THINNING_GUOHALL);
 
+        if(true) {
+            return yellowMask;
+        }
+
         //Detects major lines in the skeleton using the hough probabilistic transform
         Imgproc.HoughLinesP(skeleton, linesP,
                 DISTANCE_RESOLUTION_PX,
@@ -254,7 +259,9 @@ public class SconeFinderV2 extends VisionSubSystem {
             //For each detected gap, cut that region out of the black color space, reshape it so it only has 1 row, then add it to the list of possible skystone regions.
             for (MatOfPoint lineSegment : lineSegments) {
                 Rect segmentRegion = Imgproc.boundingRect(lineSegment);
-                segmentDataList.add(black.submat(segmentRegion).clone().reshape(1, 1));
+                if(0 <= segmentRegion.x && 0 <= segmentRegion.width && segmentRegion.x + segmentRegion.width <= black.cols() && 0 <= segmentRegion.y && 0 <= segmentRegion.height && segmentRegion.y + segmentRegion.height <= blackMask.rows()) {
+                    segmentDataList.add(black.submat(segmentRegion).clone().reshape(1, 1));
+                }
                 lineSegment.release();
             }
             lineSegments.clear();
@@ -311,6 +318,12 @@ public class SconeFinderV2 extends VisionSubSystem {
             for(Point skystone : skystones) {
                 Imgproc.circle(input,skystone,SKYSTONE_DRAW_RADIUS,SKYSTONE_DRAW_COLOR,-1);
             }
+            double redRight = 112, redLeft = 48;
+            Imgproc.line(input,new Point(redLeft,0), new Point(redLeft,500),new Scalar(120,0,0),3);
+            Imgproc.line(input,new Point(redRight,0), new Point(redRight,500),new Scalar(255,0,0),3);
+            double blueRight = 95, blueLeft = 33;
+            Imgproc.line(input,new Point(blueLeft,0), new Point(blueLeft,500),new Scalar(0,0,120),3);
+            Imgproc.line(input,new Point(blueRight,0), new Point(blueRight,500),new Scalar(0,0,255),3);
         }
 
         yellowMask.release();

@@ -12,7 +12,11 @@ import com.SCHSRobotics.HAL9001.util.misc.CustomizableGamepad;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
+ * The intake subsystem.
  *
+ * @author Cole Savage
+ * @author Jack Kinney
+ * @author Ella Player
  */
 public class Intake extends SubSystem {
 
@@ -172,6 +176,11 @@ public class Intake extends SubSystem {
         intake(0);
     }
 
+    /**
+     * The teleop configuration settings.
+     *
+     * @return The teleop configuration settings.
+     */
     @TeleopConfig
     public static ConfigParam[] teleopConfig() {
         return new ConfigParam[] {
@@ -182,6 +191,11 @@ public class Intake extends SubSystem {
         };
     }
 
+    /**
+     * The autonomous configuration settings.
+     *
+     * @return The autonomous configuration settings.
+     */
     @AutonomousConfig
     public static ConfigParam[] autonomousConfig() {
         return new ConfigParam[] {

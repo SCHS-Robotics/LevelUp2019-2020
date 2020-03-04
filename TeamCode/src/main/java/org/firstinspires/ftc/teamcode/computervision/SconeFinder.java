@@ -58,7 +58,6 @@ public class SconeFinder extends VisionSubSystem {
 
     /**
      * The constructor for ScoreFinder.
-     *
      * @param robot The robot the subsystem is using.
      */
     public SconeFinder(Robot robot) {

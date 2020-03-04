@@ -13,8 +13,6 @@ import java.util.List;
  * A thread for generating a 1-channel black color space from an RGB image.
  *
  * @author Cole Savage
- *
- * @version 1.0
  */
 public class BlackColorspace extends Thread {
     /**
@@ -28,23 +26,23 @@ public class BlackColorspace extends Thread {
     /**
      * The grayscale version of the RGB image.
      */
-    private static Mat gray = new Mat();
+    private Mat gray = new Mat();
     /**
      * The difference between the RGB R and G channels.
      */
-    private static Mat RG = new Mat();
+    private Mat RG = new Mat();
     /**
      * The difference between the RGB R and B channels.
      */
-    private static Mat RB = new Mat();
+    private Mat RB = new Mat();
     /**
      * The difference between the RGB G and B channels.
      */
-    private static Mat GB = new Mat();
+    private Mat GB = new Mat();
     /**
      * A Mat object containing the custom black color space. This color space is based on each RGB pixel's euclidean distance from black (0,0,0).
      */
-    private static Mat rgbDistance = new Mat();
+    private Mat rgbDistance = new Mat();
     /**
      * A list containing 3 Mat objects, each a channel of an RGB image.
      */

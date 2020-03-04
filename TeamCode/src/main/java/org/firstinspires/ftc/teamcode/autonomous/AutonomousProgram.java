@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.robots.Cygnus;
 @Autonomous(name = "Autonomous", group = "competition")
 @LinkTo(destination = "Teleop")
 public class AutonomousProgram extends BaseAutonomous {
-    private @MainRobot Cygnus robot;
+    public @MainRobot Cygnus robot;
 
     @Override
     public void main() {
